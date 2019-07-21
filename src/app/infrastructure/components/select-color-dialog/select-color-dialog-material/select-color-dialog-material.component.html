@@ -1,0 +1,23 @@
+<div class="form-group">
+	<label for="selectBG">Background Color</label>
+	<select class="form-control" id="selectBG" [(ngModel)]="data.backgroundColorName">
+		<option
+			*ngFor="let color of colors"
+			[selected]="color === data.backgroundColorName"
+			[ngValue]="color"
+		>
+			{{color||'Default'}}
+		</option>
+	</select>
+
+	<label for="selectFG">Foreground Color</label>
+	<select class="form-control" id="selectFG" [(ngModel)]="data.foregroundColorName">
+		<option
+			*ngFor="let color of colors"
+			[selected]="color === data.foregroundColorName"
+			[ngValue]="color"
+		>
+			{{color||'Default'}}
+		</option>
+	</select>
+</div>

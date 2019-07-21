@@ -1,0 +1,31 @@
+<div class="col-md-11">
+	<div
+		id="Configuration"
+		cdkDropList
+		cdkDropListOrientation="horizontal"
+		#configuration="cdkDropList"
+		cdkDropListConnectedTo="TrashBin"
+		[cdkDropListData]="viewElements"
+		(cdkDropListDropped)="drop($event)"
+	>
+      <span
+		  class="movingItem"
+		  *ngFor="let element of viewElements"
+		  (dblclick)="openDialog(element)"
+		  cdkDrag>
+        {{element.elementShowText}}
+      </span>
+	</div>
+</div>
+<div class="col-md-1">
+	<div
+		id="TrashBin"
+		cdkDropList
+		#configuration="cdkDropList"
+		[cdkDropListData]="discardedElements"
+		cdkDropListSortingDisabled
+		(cdkDropListDropped)="discard($event)">
+        <span class="fa fa-trash faGlyphicons">
+        </span>
+	</div>
+</div>

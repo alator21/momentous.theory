@@ -1,0 +1,17 @@
+<div class="col-md-10">
+	<div
+		[ngClass]="getPreviewClass()"
+		id='Preview'
+	>
+		<span *ngFor="let element of elements" [style.color]="element.foregroundColorName"
+			  [style.backgroundColor]="element.backgroundColorName">{{temp(element) && temp(element)}}</span>
+	</div>
+</div>
+<div class="col-md-2">
+	<span
+		title='Toggle black/white background'
+		[ngClass]="getTogglerClass()"
+		(click)="toggle()"
+	>
+	</span>
+</div>

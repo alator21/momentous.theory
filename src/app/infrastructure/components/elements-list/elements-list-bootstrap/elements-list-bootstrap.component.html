@@ -1,0 +1,12 @@
+<div id="ElementsList" cdkDropList cdkDropListSortingDisabled #elementsList="cdkDropList"
+	 [cdkDropListData]="elements"
+	 cdkDropListConnectedTo="Configuration" (cdkDropListDropped)="drop($event)" class="item-list">
+    <span
+		class="movingItem"
+		*ngFor="let element of elements"
+		cdkDrag
+		[title]="getElementDescription(element)"
+	>
+      {{element.elementName}}
+    </span>
+</div>
