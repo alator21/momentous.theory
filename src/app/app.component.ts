@@ -25,6 +25,8 @@ export class AppComponent {
 	}
 
 	gotConfigurationElements(elements: ViewElement[]): void {
-		this.configurationElements = elements;
+		setTimeout(() => {
+			this.configurationElements = elements;
+		}, 100);
 	}
 }
