@@ -1,3 +1,5 @@
+import {GeneralService} from '../application/services/general.service';
+
 export class ViewElement {
 	private readonly _elementName: string;
 	private _backgroundColorName: string | null;
@@ -32,9 +34,16 @@ export class ViewElement {
 		return new ViewElement(elementName, bgColorName, fgColorName, elementName);
 	}
 
-	static createRgb(elementName:string,bgColorRgb,fgColorRgb):ViewElement{
-		let bgColorName:string = ViewElement.calculateColorNameByRgb(bgColorRgb);
-		let fgColorName:string = ViewElement.calculateColorNameByRgb(fgColorRgb);
+	static createText(text: string, bgColorName?: string|null, fgColorName?: string|null): ViewElement {
+		let element: ViewElement = ViewElement.create(GeneralService.customTextName, bgColorName, fgColorName);
+		element.elementShowText = text;
+
+		return element;
+	}
+
+	static createRgb(elementName: string, bgColorRgb: string, fgColorRgb: string): ViewElement {
+		let bgColorName: string = GeneralService.getColorNameByRgb(bgColorRgb);
+		let fgColorName: string = GeneralService.getColorNameByRgb(fgColorRgb);
 		return new ViewElement(elementName, bgColorName, fgColorName, elementName);
 	}
 
@@ -44,32 +53,13 @@ export class ViewElement {
 	}
 
 
-	get backgroundColorName(): string|null {
+	get backgroundColorName(): string | null {
 		return this._backgroundColorName;
 	}
 
-	get backgroundColorRgb(): string|null {
-		if (this.backgroundColorDefault) {
-			return null;
-		}
-		return ViewElement.calculateRgbColorByColorName(this.backgroundColorName);
-	}
 
-
-	get foregroundColorName(): string|null {
+	get foregroundColorName(): string | null {
 		return this._foregroundColorName;
-	}
-
-	get foregroundColorRgb(): string|null {
-		if (this.foregroundColorDefault) {
-			return null;
-		}
-		return ViewElement.calculateRgbColorByColorName(this.foregroundColorName);
-	}
-
-
-	get colorBash(): string {
-		return ViewElement.calculateBashColorByColorName(this.backgroundColorName, this.foregroundColorName);
 	}
 
 
@@ -105,24 +95,6 @@ export class ViewElement {
 		}
 		return ViewElement.create(this.elementName, this.backgroundColorName, this.foregroundColorName);
 	}
-
-	static calculateRgbColorByColorName(colorName: string): string {
-		return '55/00/22';
-	}
-
-	static calculateColorNameByRgb(colorRgb:string):string{
-		// console.log(colorRgb);
-		return colorsMap.get(colorRgb);
-	}
-
-	static calculateBashColorByColorName(backgroundColorName: string, foregroundColorName: string): string {
-		return '12321';
-	}
 }
 
-const colorsMap:Map<string,string> = new Map<string, string>();
-colorsMap.set("rgb(0, 0, 0)","black");
-colorsMap.set("rgb(255, 255, 255)","white");
-// colorsMap.set("rgb(0, 0, 0)","red");
-// colorsMap.set("rgb(0, 0, 0)","red");
-// colorsMap.set("rgb(0, 0, 0)","red");
+

@@ -3,26 +3,39 @@ import {Element} from '../../model/element';
 import {ViewElement} from '../../model/viewElement';
 
 
-const BG_COLOR: string = 'black';
-const FG_COLOR: string = 'white';
+enum colorsEnum {
+	RED = 'red',
+	BLUE = 'blue',
+	GREEN = 'green',
+	YELLOW = 'yellow',
+	BLACK = 'black',
+	WHITE = 'white',
+	PINK = 'pink'
+}
+
 
 const COLOR_NAMES_TO_BASH: Map<string, string> = new Map<string, string>();
-COLOR_NAMES_TO_BASH.set('red', '160');
-COLOR_NAMES_TO_BASH.set('blue', '20');
-COLOR_NAMES_TO_BASH.set('green', '118');
-COLOR_NAMES_TO_BASH.set('yellow', '220');
-COLOR_NAMES_TO_BASH.set('black', '0');
-COLOR_NAMES_TO_BASH.set('white', '15');
+COLOR_NAMES_TO_BASH.set(colorsEnum.RED, '160');
+COLOR_NAMES_TO_BASH.set(colorsEnum.BLUE, '20');
+COLOR_NAMES_TO_BASH.set(colorsEnum.GREEN, '118');
+COLOR_NAMES_TO_BASH.set(colorsEnum.YELLOW, '220');
+COLOR_NAMES_TO_BASH.set(colorsEnum.BLACK, '0');
+COLOR_NAMES_TO_BASH.set(colorsEnum.WHITE, '15');
+COLOR_NAMES_TO_BASH.set(colorsEnum.PINK, '201');
 
+const COLOR_RGB_TO_NAME: Map<string, string> = new Map<string, string>();
+COLOR_RGB_TO_NAME.set('rgb(0, 0, 0)', colorsEnum.BLACK);
+COLOR_RGB_TO_NAME.set('rgb(255, 255, 255)', colorsEnum.WHITE);
 
 const COLORS: string[] = [];
 COLORS.push(null);
-COLORS.push('red');
-COLORS.push('blue');
-COLORS.push('green');
-COLORS.push('yellow');
-COLORS.push('black');
-COLORS.push('white');
+COLORS.push(colorsEnum.RED);
+COLORS.push(colorsEnum.BLUE);
+COLORS.push(colorsEnum.GREEN);
+COLORS.push(colorsEnum.YELLOW);
+COLORS.push(colorsEnum.BLACK);
+COLORS.push(colorsEnum.WHITE);
+COLORS.push(colorsEnum.PINK);
 
 
 const elements: Map<string, Element> = new Map();
@@ -38,7 +51,7 @@ elements.set('Time-short(HH:MM)', new Element('Time-short(HH:MM)', 'the current 
 elements.set('Time(HH:MM:SS)', new Element('Time(HH:MM:SS)', 'the current time in 24-hour HH:MM:SS format', '17:13:30', '\\t'));
 elements.set('Exit status', new Element('Exit status', 'the exit status', '0', '\\$?'));
 elements.set('Date', new Element('Date', 'the date in Weekday Month Date format', 'Wed Oct 31', '\\d'));
-elements.set('Text', new Element('Text', "your custom text", null, null));
+elements.set('Text', new Element('Text', 'your custom text', null, null));
 
 
 @Injectable({
@@ -46,13 +59,14 @@ elements.set('Text', new Element('Text', "your custom text", null, null));
 })
 export class GeneralService {
 	static defaultBashColor: string = '\\[\\033[0m\\]';
-	static customTextName:string = 'Text';
+	static customTextName: string = 'Text';
+
 	private _defaultBgColor: string;
 	private _defaultFgColor: string;
 
 	constructor() {
-		this._defaultBgColor = BG_COLOR;
-		this._defaultFgColor = FG_COLOR;
+		this._defaultBgColor = colorsEnum.BLACK;
+		this._defaultFgColor = colorsEnum.WHITE;
 	}
 
 
@@ -70,7 +84,7 @@ export class GeneralService {
 		this._defaultBgColor = bgColor;
 	}
 
-	getElementExampleByViewElement(element: ViewElement): string | null {
+	static getElementExampleByViewElement(element: ViewElement): string | null {
 		if (element.elementName === GeneralService.customTextName) {
 			return element.elementShowText;
 		}
@@ -78,7 +92,7 @@ export class GeneralService {
 		return el && el.example;
 	}
 
-	getElementBashRepresentationByViewElement(element: ViewElement): string | null {
+	static getElementBashRepresentationByViewElement(element: ViewElement): string | null {
 		if (element.elementName === GeneralService.customTextName) {
 			return element.elementShowText;
 		}
@@ -86,7 +100,7 @@ export class GeneralService {
 		return el && el.bashRepresentation;
 	}
 
-	getBashBgColorByViewElement(element: ViewElement): string {
+	static getBashBgColorByViewElement(element: ViewElement): string {
 		let bgColorName: string = (!element.backgroundColorDefault && element.backgroundColorName) || null;
 		if (bgColorName == null) {
 			return GeneralService.defaultBashColor;
@@ -94,7 +108,7 @@ export class GeneralService {
 		return `\\[\\033[48;5;${(COLOR_NAMES_TO_BASH.get(bgColorName)) || ''}m\\]`;
 	}
 
-	getBashFgColorByViewElement(element: ViewElement): string {
+	static getBashFgColorByViewElement(element: ViewElement): string {
 		let fgColorName: string = (!element.foregroundColorDefault && element.foregroundColorName) || null;
 		if (fgColorName == null) {
 			return GeneralService.defaultBashColor;
@@ -102,13 +116,21 @@ export class GeneralService {
 		return `\\[\\033[38;5;${(COLOR_NAMES_TO_BASH.get(fgColorName)) || ''}m\\]`;
 	}
 
-	getDescriptionByViewElement(element: ViewElement): string {
+	static getDescriptionByViewElement(element: ViewElement): string {
 		return elements.get(element.elementName).description;
 	}
 
 
-	getAvailableColors() {
+	static getAvailableColors() {
 		return COLORS;
+	}
+
+	static getColorNameByRgb(colorRgb: string): string | null {
+		return COLOR_RGB_TO_NAME.get(colorRgb) || null;
+	}
+
+	static COLORS() {
+		return colorsEnum;
 	}
 
 }

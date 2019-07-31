@@ -18,7 +18,7 @@ export class ElementsListBootstrapComponent implements OnInit {
 	elements: ViewElement[];
 	sortableOptions: SortablejsOptions;
 
-	constructor(private service: GeneralService) {
+	constructor() {
 		this.presenter = new ElementsListPresenter();
 		this.sortableOptions = {
 			"sort": false,
@@ -44,6 +44,6 @@ export class ElementsListBootstrapComponent implements OnInit {
 	};
 
 	getElementDescription(element: ViewElement): string {
-		return this.service.getDescriptionByViewElement(element);
+		return GeneralService.getDescriptionByViewElement(element);
 	}
 }

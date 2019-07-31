@@ -34,11 +34,11 @@ export class OutputBootstrapComponent implements OnInit {
 		let output: string = ``;
 
 		output += START_OUTPUT;
-		let previousFGColor: string = this.service.getBashFgColorByViewElement(ViewElement.createDefault(null));
-		let previousBGColor: string = this.service.getBashBgColorByViewElement(ViewElement.createDefault(null));
+		let previousFGColor: string = GeneralService.getBashFgColorByViewElement(ViewElement.createDefault(null));
+		let previousBGColor: string = GeneralService.getBashBgColorByViewElement(ViewElement.createDefault(null));
 		for (let element of this.elements) {
-			let fgColor: string = this.service.getBashFgColorByViewElement(element);
-			let bgColor: string = this.service.getBashBgColorByViewElement(element);
+			let fgColor: string = GeneralService.getBashFgColorByViewElement(element);
+			let bgColor: string = GeneralService.getBashBgColorByViewElement(element);
 			let isFgChanging: boolean = false;
 			let isBgChanging: boolean = false;
 			if (previousFGColor !== fgColor) {
@@ -83,7 +83,7 @@ export class OutputBootstrapComponent implements OnInit {
 			}
 
 
-			let bashRepresentation = this.service.getElementBashRepresentationByViewElement(element);
+			let bashRepresentation = GeneralService.getElementBashRepresentationByViewElement(element);
 			output += bashRepresentation;
 		}
 

@@ -68,7 +68,7 @@ export class PreviewBootstrapComponent implements OnInit {
 	}
 
 	temp(viewElement: ViewElement): string | null {
-		let example = this.service.getElementExampleByViewElement(viewElement);
+		let example = GeneralService.getElementExampleByViewElement(viewElement);
 		return example || null;
 	}
 }

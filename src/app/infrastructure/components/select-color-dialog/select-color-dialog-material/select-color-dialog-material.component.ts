@@ -12,7 +12,7 @@ export class SelectColorDialogMaterialComponent implements OnInit {
 	colors: string[] = [];
 
 	constructor(private service:GeneralService,public dialogRef: MatDialogRef<SelectColorDialogMaterialComponent>, @Inject(MAT_DIALOG_DATA) public data: ViewElement) {
-		this.colors = this.service.getAvailableColors();
+		this.colors = GeneralService.getAvailableColors();
 	}
 
 	ngOnInit() {
