@@ -1,12 +1,14 @@
-<div id="ElementsList" cdkDropList cdkDropListSortingDisabled #elementsList="cdkDropList"
-	 [cdkDropListData]="elements"
-	 cdkDropListConnectedTo="Configuration" (cdkDropListDropped)="drop($event)" class="item-list">
-    <span
-		class="movingItem"
-		*ngFor="let element of elements"
-		cdkDrag
-		[title]="getElementDescription(element)"
-	>
-      {{element.elementName}}
-    </span>
+<div class="helpText">
+	<h5>Elements</h5>
+	Drag the elements you want, into your configuration
+</div>
+<div
+	id="ElementsList"
+	[sortablejs]="elements"
+	[sortablejsOptions]="sortableOptions"
+	[sortablejsCloneFunction]="myCloneImplementation"
+>
+	<span *ngFor="let element of elements" [title]="getElementDescription(element)">
+		{{element.elementName}}
+	</span>
 </div>

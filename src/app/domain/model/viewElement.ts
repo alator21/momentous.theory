@@ -32,6 +32,12 @@ export class ViewElement {
 		return new ViewElement(elementName, bgColorName, fgColorName, elementName);
 	}
 
+	static createRgb(elementName:string,bgColorRgb,fgColorRgb):ViewElement{
+		let bgColorName:string = ViewElement.calculateColorNameByRgb(bgColorRgb);
+		let fgColorName:string = ViewElement.calculateColorNameByRgb(fgColorRgb);
+		return new ViewElement(elementName, bgColorName, fgColorName, elementName);
+	}
+
 
 	get elementName(): string {
 		return this._elementName;
@@ -104,7 +110,19 @@ export class ViewElement {
 		return '55/00/22';
 	}
 
+	static calculateColorNameByRgb(colorRgb:string):string{
+		// console.log(colorRgb);
+		return colorsMap.get(colorRgb);
+	}
+
 	static calculateBashColorByColorName(backgroundColorName: string, foregroundColorName: string): string {
 		return '12321';
 	}
 }
+
+const colorsMap:Map<string,string> = new Map<string, string>();
+colorsMap.set("rgb(0, 0, 0)","black");
+colorsMap.set("rgb(255, 255, 255)","white");
+// colorsMap.set("rgb(0, 0, 0)","red");
+// colorsMap.set("rgb(0, 0, 0)","red");
+// colorsMap.set("rgb(0, 0, 0)","red");

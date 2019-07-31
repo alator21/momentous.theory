@@ -1,12 +1,14 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {ConfigurationPresenter} from '../../../../domain/view/configuration/configurationPresenter';
 import {ViewElement} from '../../../../domain/model/viewElement';
 import {ConfigurationEvent} from '../../../../domain/view/configuration/configurationEvent';
 import {ConfigurationInitViewEvent} from '../../../../domain/view/configuration/configurationInitViewEvent';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {DomSanitizer} from '@angular/platform-browser';
 import {MatDialog} from '@angular/material';
 import {SelectColorDialogMaterialComponent} from '../../select-color-dialog/select-color-dialog-material/select-color-dialog-material.component';
+import {SortablejsOptions} from 'ngx-sortablejs';
+import {GeneralService} from '../../../../domain/application/services/general.service';
+
+declare let $: any;
 
 @Component({
 	selector: 'app-configuration-bootstrap',
@@ -16,80 +18,73 @@ import {SelectColorDialogMaterialComponent} from '../../select-color-dialog/sele
 })
 export class ConfigurationBootstrapComponent implements OnInit {
 	private readonly presenter: ConfigurationPresenter;
-	@Input() private elements: ViewElement[];
 	@Output() configurationElementsEmitter = new EventEmitter<ViewElement[]>();
-	private viewElements: ViewElement[];
-	private discardedElements: ViewElement[] = [];
+	viewElements: ViewElement[];
+	discardedElements: ViewElement[] = [];
+	sortableOptions: SortablejsOptions;
+	discardedOptions: SortablejsOptions;
 
-	constructor(private sanitizer: DomSanitizer,public dialog:MatDialog) {
+	constructor(public dialog: MatDialog, private cd: ChangeDetectorRef) {
 		this.presenter = new ConfigurationPresenter();
+		this.sortableOptions = {
+			'group': {
+				'name': 'shared'
+			},
+			'onAdd': (a) => {
+				let element: ViewElement = this.viewElements[a.newIndex];
+
+				if (element.elementName === GeneralService.customTextName) {
+					let promptText = '';
+					do {
+						promptText = prompt('Enter your text.\n\nBash only accepts the following characters: abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPRSTUVWXYZ@#$%^&*()/[];:~1234567890');
+					}
+					while (promptText != null && promptText != '' && !'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPRSTUVWXYZ@#$%^&*()/[];:~1234567890'.split('').some(function(v) {
+						return promptText.indexOf(v) >= 0;
+					}));
+					if (promptText == null || promptText === '') {
+						promptText = ' ';
+					}
+					element.elementShowText = promptText;
+				}
+			}
+		};
+		this.discardedOptions = {
+			'sort': false,
+			'animation': 100,
+			'ghostClass': 'invisible',
+			'group': {
+				'name': 'shared',
+				'put': (to, from, element) => {
+					return from.el.id !== 'ElementsList';
+				}
+			}
+		};
 	}
 
 	ngOnInit() {
 		this.presenter.state.asObservable().subscribe(state => {
 			this.viewElements = state.elements;
-
+			this.emit();
 		});
+
 
 		let event: ConfigurationEvent = new ConfigurationInitViewEvent();
 		this.presenter.publishEvent(event);
 	}
 
-	drop(event: CdkDragDrop<ViewElement[]>) {
-		if (event.previousContainer === event.container) {
-			moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-		} else {
-			let el = this.elements[event.previousIndex].clone();
-			if (el.elementName === 'Text'){
-				let promptText = '';
-				do{
-					promptText = prompt("Enter your text.\n\nBash only accepts the following characters: abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPRSTUVWXYZ@#$%^&*()/[];:~1234567890");
-				}
-				while (promptText != null && 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPRSTUVWXYZ@#$%^&*()/[];:~1234567890'.indexOf(promptText) === -1);
-				if (promptText == null || promptText === ''){
-					promptText = ' ';
-				}
-				el.elementShowText = promptText;
-			}
-			copyItemIntoArray(this.viewElements, event.currentIndex,el);
-
-		}
-		this.emit();
-	}
-
-	discard(event: CdkDragDrop<ViewElement[]>) {
-		//From :viewElements     -previousIndex
-		//To   :discardedElements-currentIndex
-		if (event.previousContainer === event.container) {
-			moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-		} else {
-			deleteItemFromArray(this.viewElements, event.previousIndex);
-		}
-		this.emit();
-	}
 
 	emit() {
 		this.configurationElementsEmitter.emit(this.viewElements);
 	}
 
-	openDialog(element:ViewElement): void {
+	openDialog(element: ViewElement): void {
 		const dialogRef = this.dialog.open(SelectColorDialogMaterialComponent, {
 			width: '250px',
 			height: '250px',
-			data:element
+			data: element
 		});
-
-		dialogRef.afterClosed().subscribe((result:ViewElement) => {
+		dialogRef.afterClosed().subscribe((result: ViewElement) => {
 			//handle the dialog close.
 		});
 	}
-
-}
-
-function copyItemIntoArray(arrTo: any[], indexFrom: number, el:any): void {
-	arrTo.splice(indexFrom, 0, el);
-}
-
-function deleteItemFromArray(arrFrom: any[], indexFrom: number): void {
-	arrFrom.splice(indexFrom, 1);
 }

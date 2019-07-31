@@ -46,6 +46,7 @@ elements.set('Text', new Element('Text', "your custom text", null, null));
 })
 export class GeneralService {
 	static defaultBashColor: string = '\\[\\033[0m\\]';
+	static customTextName:string = 'Text';
 	private _defaultBgColor: string;
 	private _defaultFgColor: string;
 
@@ -70,7 +71,7 @@ export class GeneralService {
 	}
 
 	getElementExampleByViewElement(element: ViewElement): string | null {
-		if (element.elementName === 'Text') {
+		if (element.elementName === GeneralService.customTextName) {
 			return element.elementShowText;
 		}
 		let el: Element = elements.get(element.elementName);
@@ -78,7 +79,7 @@ export class GeneralService {
 	}
 
 	getElementBashRepresentationByViewElement(element: ViewElement): string | null {
-		if (element.elementName === 'Text') {
+		if (element.elementName === GeneralService.customTextName) {
 			return element.elementShowText;
 		}
 		let el: Element = elements.get(element.elementName);

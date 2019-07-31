@@ -1,7 +1,6 @@
-
 #Configuration {
 	background-color: #FFB371;
-	/*height: 40px;*/
+	height: 100px;
 	min-height: 30px;
 	width: 100%;
 	border: 3px dashed black;
@@ -9,7 +8,8 @@
 }
 
 #Configuration span {
-	width: 130px;
+	width: 170px;
+	height:35px;
 	background-color: black;
 	color: white;
 	border: 1px solid black;
@@ -19,15 +19,11 @@
 	margin: 2px;
 	text-align: center;
 	align-content: center;
+	user-select: none;
 }
 #Configuration span:before {
 	content: "\200b";
 }
-#Configuration span.red {
-	border: 3px dashed red;
-	height: 32px;
-}
-
 
 
 .faGlyphicons {
@@ -39,26 +35,7 @@
 	width: 100px;
 	height: 100px;
 }
-
-
-.movingItem {
-	color: white;
-	text-align: center;
-	cursor: move;
-	background: black;
-	display:inline-block;
+.invisible{
+	display: none;
 }
 
-.cdk-drag-preview {
-	box-sizing: border-box;
-	box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-	0 8px 10px 1px rgba(0, 0, 0, 0.14),
-	0 3px 14px 2px rgba(0, 0, 0, 0.12);
-	border-radius: 20px;
-	background-color: red;
-	color:black;
-}
-
-.cdk-drag-placeholder {
-	opacity: 0;
-}

@@ -1,31 +1,36 @@
-<div class="col-md-11">
-	<div
-		id="Configuration"
-		cdkDropList
-		cdkDropListOrientation="horizontal"
-		#configuration="cdkDropList"
-		cdkDropListConnectedTo="TrashBin"
-		[cdkDropListData]="viewElements"
-		(cdkDropListDropped)="drop($event)"
-	>
-      <span
-		  class="movingItem"
-		  *ngFor="let element of viewElements"
-		  (dblclick)="openDialog(element)"
-		  cdkDrag>
-        {{element.elementShowText}}
-      </span>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="helpText">
+				<h5>Your configuration</h5>
+				Double click an element to change it's color. Drag it to the bin to remove it.
+			</div>
+		</div>
+
+	</div>
+	<div class="row">
+		<div class="col-md-11">
+			<div
+				id="Configuration"
+				[sortablejs]="viewElements"
+				[sortablejsOptions]="sortableOptions"
+			>
+		<span *ngFor="let element of viewElements" (dblclick)="openDialog(element)">
+			{{element.elementShowText}}
+		</span>
+			</div>
+
+		</div>
+		<div class="col-md-1">
+			<div
+				id="TrashBin"
+				[sortablejs]="discardedElements"
+				[sortablejsOptions]="discardedOptions"
+			>
+		<span class="fa fa-trash faGlyphicons">
+		</span>
+			</div>
+		</div>
 	</div>
 </div>
-<div class="col-md-1">
-	<div
-		id="TrashBin"
-		cdkDropList
-		#configuration="cdkDropList"
-		[cdkDropListData]="discardedElements"
-		cdkDropListSortingDisabled
-		(cdkDropListDropped)="discard($event)">
-        <span class="fa fa-trash faGlyphicons">
-        </span>
-	</div>
-</div>
+

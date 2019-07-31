@@ -2,9 +2,9 @@ import {Component, EventEmitter, OnInit, Output, ViewEncapsulation} from '@angul
 import {ElementsListPresenter} from '../../../../domain/view/elements-list/elementsListPresenter';
 import {ElementsListEvent} from '../../../../domain/view/elements-list/elementsListEvent';
 import {ElementsListInitViewEvent} from '../../../../domain/view/elements-list/elementsListInitViewEvent';
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {ViewElement} from '../../../../domain/model/viewElement';
 import {GeneralService} from '../../../../domain/application/services/general.service';
+import {SortablejsOptions} from 'ngx-sortablejs';
 
 @Component({
 	selector: 'app-elements-list-bootstrap',
@@ -15,14 +15,21 @@ import {GeneralService} from '../../../../domain/application/services/general.se
 export class ElementsListBootstrapComponent implements OnInit {
 	@Output() elementsEmitter = new EventEmitter<ViewElement[]>();
 	private readonly presenter: ElementsListPresenter;
-	private elements: ViewElement[];
+	elements: ViewElement[];
+	sortableOptions: SortablejsOptions;
 
-	constructor(private service:GeneralService) {
+	constructor(private service: GeneralService) {
 		this.presenter = new ElementsListPresenter();
+		this.sortableOptions = {
+			"sort": false,
+			"group" : {
+				"name" : "shared",
+				"pull" : "clone"
+			}
+		};
 	}
 
 	ngOnInit() {
-
 		this.presenter.state.asObservable().subscribe(state => {
 			this.elements = state.elements;
 			this.elementsEmitter.emit(this.elements);
@@ -32,19 +39,11 @@ export class ElementsListBootstrapComponent implements OnInit {
 		this.presenter.publishEvent(event);
 	}
 
+	myCloneImplementation = (item:ViewElement) => {
+		return item.clone(); // this is what happens if sortablejsCloneFunction is not provided. Add your stuff here
+	};
 
-	drop(event: CdkDragDrop<ViewElement[]>) {
-		if (event.previousContainer === event.container) {
-			moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-		} else {
-			transferArrayItem(event.previousContainer.data,
-				event.container.data,
-				event.previousIndex,
-				event.currentIndex);
-		}
-	}
-
-	getElementDescription(element:ViewElement):string{
+	getElementDescription(element: ViewElement): string {
 		return this.service.getDescriptionByViewElement(element);
 	}
 }

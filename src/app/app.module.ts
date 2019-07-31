@@ -12,6 +12,7 @@ import {SelectColorDialogMaterialComponent} from './infrastructure/components/se
 import {MatButtonModule, MatDialogModule, MatSelectModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule} from '@angular/forms';
+import {SortablejsModule} from 'ngx-sortablejs';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import {FormsModule} from '@angular/forms';
 		BrowserAnimationsModule,
 		MatSelectModule,
 		FormsModule,
-		MatButtonModule
+		MatButtonModule,
+		SortablejsModule.forRoot({ "animation": 150})
 	],
 	entryComponents: [
 		SelectColorDialogMaterialComponent

@@ -8,11 +8,11 @@ import {PreviewToggleEvent} from '../../../../domain/view/preview/previewToggleE
 import {GeneralService} from '../../../../domain/application/services/general.service';
 
 
-const DEFAULT_BLACK_TOGGLER_CLASS:string = 'fa fa-3x fa-toggle-on fa-rotate-180';
-const DEFAULT_WHITE_TOGGLER_CLASS:string = 'fa fa-3x fa-toggle-on color-white';
+const DEFAULT_BLACK_TOGGLER_CLASS: string = 'fa fa-3x fa-toggle-on fa-rotate-180';
+const DEFAULT_WHITE_TOGGLER_CLASS: string = 'fa fa-3x fa-toggle-on color-white';
 
-const DEFAULT_BG_BLACK_FG_WHITE_PREVIEW_CLASS:string = 'background-black color-white';
-const DEFAULT_FG_BLACK_BG_WHITE_PREVIEW_CLASS:string = 'background-white color-black';
+const DEFAULT_BG_BLACK_FG_WHITE_PREVIEW_CLASS: string = 'background-black color-white';
+const DEFAULT_FG_BLACK_BG_WHITE_PREVIEW_CLASS: string = 'background-white color-black';
 
 
 @Component({
@@ -23,11 +23,11 @@ const DEFAULT_FG_BLACK_BG_WHITE_PREVIEW_CLASS:string = 'background-white color-b
 })
 export class PreviewBootstrapComponent implements OnInit {
 	private readonly presenter: PreviewPresenter;
-	@Input() private elements: ViewElement[];
+	@Input() elements: ViewElement[];
 	private bgColor: string;
 	private fgColor: string;
 
-	constructor(private sanitizer: DomSanitizer,private service:GeneralService) {
+	constructor(private sanitizer: DomSanitizer, private service: GeneralService) {
 		this.presenter = new PreviewPresenter(service);
 	}
 
@@ -45,11 +45,11 @@ export class PreviewBootstrapComponent implements OnInit {
 	}
 
 	toggle() {
-		let event:PreviewEvent = new PreviewToggleEvent();
+		let event: PreviewEvent = new PreviewToggleEvent();
 		this.presenter.publishEvent(event);
 	}
 
-	isBgBlackFgWhite():boolean{
+	isBgBlackFgWhite(): boolean {
 		return this.bgColor === 'black';
 	}
 
@@ -67,9 +67,8 @@ export class PreviewBootstrapComponent implements OnInit {
 		return DEFAULT_FG_BLACK_BG_WHITE_PREVIEW_CLASS;
 	}
 
-	temp(viewElement:ViewElement):string|null{
+	temp(viewElement: ViewElement): string | null {
 		let example = this.service.getElementExampleByViewElement(viewElement);
-		return example||null;
+		return example || null;
 	}
-
 }

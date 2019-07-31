@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ViewElement} from '../../../../domain/model/viewElement';
 import {GeneralService} from '../../../../domain/application/services/general.service';
@@ -9,13 +9,14 @@ import {GeneralService} from '../../../../domain/application/services/general.se
 	styleUrls: ['./select-color-dialog-material.component.css']
 })
 export class SelectColorDialogMaterialComponent implements OnInit {
-	private colors: string[] = [];
+	colors: string[] = [];
 
 	constructor(private service:GeneralService,public dialogRef: MatDialogRef<SelectColorDialogMaterialComponent>, @Inject(MAT_DIALOG_DATA) public data: ViewElement) {
-		this.colors = this.service.getAvailableColors()
+		this.colors = this.service.getAvailableColors();
 	}
 
 	ngOnInit() {
+
 	}
 
 }

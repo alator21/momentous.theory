@@ -13,7 +13,7 @@ import {GeneralService} from '../../../../domain/application/services/general.se
 })
 export class OutputBootstrapComponent implements OnInit {
 	private presenter: OutputPresenter;
-	@Input() private elements: ViewElement[];
+	@Input() elements: ViewElement[];
 
 	constructor(private  service: GeneralService) {
 		this.presenter = new OutputPresenter();

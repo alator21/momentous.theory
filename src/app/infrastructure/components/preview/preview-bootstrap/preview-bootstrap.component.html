@@ -1,17 +1,30 @@
-<div class="col-md-10">
-	<div
-		[ngClass]="getPreviewClass()"
-		id='Preview'
-	>
-		<span *ngFor="let element of elements" [style.color]="element.foregroundColorName"
-			  [style.backgroundColor]="element.backgroundColorName">{{temp(element) && temp(element)}}</span>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="helpText">
+				<h5>Preview</h5>
+				Roughly how it will be displayed into your terminal
+			</div>
+		</div>
 	</div>
-</div>
-<div class="col-md-2">
+	<div class="row">
+		<div class="col-md-10">
+			<div
+				[ngClass]="getPreviewClass()"
+				id='Preview'
+			>
+		<span *ngFor="let element of elements" [style.color]="element.foregroundColorName"
+			  [style.backgroundColor]="element.backgroundColorName">{{temp(element)}}</span>
+			</div>
+		</div>
+		<div class="col-md-2">
 	<span
 		title='Toggle black/white background'
 		[ngClass]="getTogglerClass()"
 		(click)="toggle()"
 	>
 	</span>
+		</div>
+	</div>
 </div>
+
