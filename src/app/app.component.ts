@@ -8,7 +8,7 @@ import {ViewElement} from './domain/model/viewElement';
 	encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
-	title = 'z8';
+	title = 'momentous.theory';
 
 	elements: ViewElement[];
 	configurationElements: ViewElement[];
