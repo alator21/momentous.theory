@@ -3,7 +3,7 @@
 		<div class="col-md-12">
 			<div class="helpText">
 				<h5>Your configuration</h5>
-				Double click an element to change it's color. Drag it to the bin to remove it.
+				Double click an element to change it's color. Drag it outside to remove it.
 			</div>
 		</div>
 
@@ -12,24 +12,35 @@
 		<div class="col-md-11">
 			<div
 				id="Configuration"
-				[sortablejs]="viewElements"
+				[sortablejs]="elements"
 				[sortablejsOptions]="sortableOptions"
 			>
-		<span *ngFor="let element of viewElements" (dblclick)="openDialog(element)">
+		<span
+			*ngFor="let element of elements;index as i"
+			(dblclick)="openDialog(element,i)"
+			[style.color]="element.foregroundColorName"
+			[style.backgroundColor]="element.backgroundColorName"
+		>
 			{{element.elementShowText}}
 		</span>
 			</div>
 
 		</div>
 		<div class="col-md-1">
-			<div
-				id="TrashBin"
-				[sortablejs]="discardedElements"
-				[sortablejsOptions]="discardedOptions"
+<!--			<span-->
+<!--				id="TrashBin"-->
+<!--				[sortablejs]="discardedElements"-->
+<!--				[sortablejsOptions]="discardedOptions"-->
+<!--			>-->
+<!--			<span title='Drop an element here to destroy it' class="fa fa-trash faGlyphicons"></span>-->
+<!--			</span>-->
+<!--			<hr>-->
+			<span
+				title='Click here to destroy all the elements.'
+				class='fa fa-remove faGlyphicons'
+				(click)="removeAll()"
 			>
-		<span class="fa fa-trash faGlyphicons">
-		</span>
-			</div>
+			</span>
 		</div>
 	</div>
 </div>

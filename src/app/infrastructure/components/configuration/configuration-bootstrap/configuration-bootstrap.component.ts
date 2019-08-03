@@ -7,8 +7,8 @@ import {MatDialog} from '@angular/material';
 import {SelectColorDialogMaterialComponent} from '../../select-color-dialog/select-color-dialog-material/select-color-dialog-material.component';
 import {SortablejsOptions} from 'ngx-sortablejs';
 import {GeneralService} from '../../../../domain/application/services/general.service';
-
-declare let $: any;
+import {ConfigurationElementChangedEvent} from '../../../../domain/view/configuration/configurationElementChangedEvent';
+import {ConfigurationRemoveAllEvent} from '../../../../domain/view/configuration/configurationRemoveAllEvent';
 
 @Component({
 	selector: 'app-configuration-bootstrap',
@@ -19,19 +19,17 @@ declare let $: any;
 export class ConfigurationBootstrapComponent implements OnInit {
 	private readonly presenter: ConfigurationPresenter;
 	@Output() configurationElementsEmitter = new EventEmitter<ViewElement[]>();
-	viewElements: ViewElement[];
-	discardedElements: ViewElement[] = [];
+	elements: ViewElement[];
 	sortableOptions: SortablejsOptions;
-	discardedOptions: SortablejsOptions;
 
-	constructor(public dialog: MatDialog, private cd: ChangeDetectorRef) {
+	constructor(public dialog: MatDialog,private ref: ChangeDetectorRef) {
 		this.presenter = new ConfigurationPresenter();
 		this.sortableOptions = {
 			'group': {
 				'name': 'shared'
 			},
 			'onAdd': (a) => {
-				let element: ViewElement = this.viewElements[a.newIndex];
+				let element: ViewElement = this.elements[a.newIndex];
 
 				if (element.elementName === GeneralService.customTextName) {
 					let promptText = '';
@@ -46,24 +44,39 @@ export class ConfigurationBootstrapComponent implements OnInit {
 					}
 					element.elementShowText = promptText;
 				}
-			}
-		};
-		this.discardedOptions = {
-			'sort': false,
-			'animation': 100,
-			'ghostClass': 'invisible',
-			'group': {
-				'name': 'shared',
-				'put': (to, from, element) => {
-					return from.el.id !== 'ElementsList';
+				let event: ConfigurationEvent = new ConfigurationElementChangedEvent(this.elements);
+				this.presenter.publishEvent(event);
+			},
+			'onUpdate': () => {
+				let event: ConfigurationEvent = new ConfigurationElementChangedEvent(this.elements);
+				this.presenter.publishEvent(event);
+			},
+			'onRemove': () => {
+				let event: ConfigurationEvent = new ConfigurationElementChangedEvent(this.elements);
+				this.presenter.publishEvent(event);
+			},
+			'onEnd': (event)=>{
+				//TODO when removeOnSpill is released on ngx-sortablejs, use that instead of this ugly hack.
+				let el = document.getElementById('Configuration');
+				let elementIndex= event.oldIndex;
+				let originalEvent = event.originalEvent;
+				let {clientX,clientY} = originalEvent;
+				const { top, right, bottom, left } = el.getBoundingClientRect();
+				let droppedOutside = (clientY < top || clientX < left || clientY > bottom || clientX > right);
+				if (droppedOutside){
+					this.elements.splice(elementIndex,1);
+					let event: ConfigurationEvent = new ConfigurationElementChangedEvent(this.elements);
+					this.presenter.publishEvent(event);
 				}
 			}
+
 		};
 	}
 
 	ngOnInit() {
 		this.presenter.state.asObservable().subscribe(state => {
-			this.viewElements = state.elements;
+			this.elements = state.elements;
+			this.ref.detectChanges();
 			this.emit();
 		});
 
@@ -74,17 +87,33 @@ export class ConfigurationBootstrapComponent implements OnInit {
 
 
 	emit() {
-		this.configurationElementsEmitter.emit(this.viewElements);
+		this.configurationElementsEmitter.emit(this.elements);
 	}
 
-	openDialog(element: ViewElement): void {
+	openDialog(element: ViewElement, index:number): void {
 		const dialogRef = this.dialog.open(SelectColorDialogMaterialComponent, {
 			width: '250px',
 			height: '250px',
-			data: element
+			data: element.clone()
 		});
-		dialogRef.afterClosed().subscribe((result: ViewElement) => {
-			//handle the dialog close.
+		dialogRef.afterClosed().subscribe((updatedElement: ViewElement) => {
+			this.elements[index] = updatedElement;
+			let event: ConfigurationEvent = new ConfigurationElementChangedEvent(this.elements);
+			this.presenter.publishEvent(event);
 		});
 	}
+
+	removeAll():void{
+		let answer = confirm('Are you sure you want to remove all configuration elements?');
+		if (answer){
+			let event: ConfigurationEvent = new ConfigurationRemoveAllEvent();
+			this.presenter.publishEvent(event);
+		}
+	}
+	// getPreviewClass(): string {
+	// 	if (this.isBgBlackFgWhite()) {
+	// 		return DEFAULT_BG_BLACK_FG_WHITE_PREVIEW_CLASS;
+	// 	}
+	// 	return DEFAULT_FG_BLACK_BG_WHITE_PREVIEW_CLASS;
+	// }
 }

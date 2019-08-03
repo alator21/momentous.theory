@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {PreviewPresenter} from '../../../../domain/view/preview/previewPresenter';
 import {PreviewEvent} from '../../../../domain/view/preview/previewEvent';
 import {PreviewInitViewEvent} from '../../../../domain/view/preview/previewInitViewEvent';
@@ -6,6 +6,9 @@ import {ViewElement} from '../../../../domain/model/viewElement';
 import {DomSanitizer} from '@angular/platform-browser';
 import {PreviewToggleEvent} from '../../../../domain/view/preview/previewToggleEvent';
 import {GeneralService} from '../../../../domain/application/services/general.service';
+import {Subject} from 'rxjs';
+import {PreviewElementChangedEvent} from '../../../../domain/view/preview/previewElementChangedEvent';
+import {PreviewState} from '../../../../domain/view/preview/previewState';
 
 
 const DEFAULT_BLACK_TOGGLER_CLASS: string = 'fa fa-3x fa-toggle-on fa-rotate-180';
@@ -23,21 +26,28 @@ const DEFAULT_FG_BLACK_BG_WHITE_PREVIEW_CLASS: string = 'background-white color-
 })
 export class PreviewBootstrapComponent implements OnInit {
 	private readonly presenter: PreviewPresenter;
-	@Input() elements: ViewElement[];
+	@Input() listener: Subject<ViewElement[]>;
+	elements: ViewElement[];
 	private bgColor: string;
 	private fgColor: string;
 
-	constructor(private sanitizer: DomSanitizer, private service: GeneralService) {
+	constructor(private sanitizer: DomSanitizer, private service: GeneralService,private ref: ChangeDetectorRef) {
 		this.presenter = new PreviewPresenter(service);
 	}
 
 	ngOnInit() {
-		this.presenter.state.asObservable().subscribe(state => {
+		this.presenter.state.asObservable().subscribe((state: PreviewState) => {
 			if (state.elements != null) {
 				this.elements = state.elements;
 			}
 			this.bgColor = state.bgColor;
 			this.fgColor = state.fgColor;
+			this.ref.detectChanges();
+		});
+
+		this.listener.subscribe((elements: ViewElement[]) => {
+			let event: PreviewEvent = new PreviewElementChangedEvent(elements);
+			this.presenter.publishEvent(event);
 		});
 
 		let event: PreviewEvent = new PreviewInitViewEvent();

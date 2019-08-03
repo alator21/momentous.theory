@@ -1,24 +1,23 @@
 <div class="container-fluid">
 	<app-preview-bootstrap
 		class="row"
-		[elements]="configurationElements">
+		[listener]="appElementsEmmiter"
+	>
 	</app-preview-bootstrap>
 	<hr>
-
 	<app-configuration-bootstrap
 		class="row"
-		(configurationElementsEmitter)="gotConfigurationElements($event)"
-		>
+		(configurationElementsEmitter)="listener($event)"
+	>
 	</app-configuration-bootstrap>
 	<hr>
 	<div class="row">
-		<app-elements-list-bootstrap
-			class="col-md-7"
-			(elementsEmitter)="gotElements($event)">
+		<app-elements-list-bootstrap class="col-md-7">
 		</app-elements-list-bootstrap>
 		<app-output-bootstrap
 			class="col-md-5"
-			[elements]="configurationElements">
+			[listener]="appElementsEmmiter"
+		>
 		</app-output-bootstrap>
 	</div>
 </div>

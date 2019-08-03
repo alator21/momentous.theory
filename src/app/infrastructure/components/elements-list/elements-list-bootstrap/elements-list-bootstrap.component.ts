@@ -24,7 +24,10 @@ export class ElementsListBootstrapComponent implements OnInit {
 			"sort": false,
 			"group" : {
 				"name" : "shared",
-				"pull" : "clone"
+				"pull" : "clone",
+				"put" : ()=>{
+					return false;
+				}
 			}
 		};
 	}
@@ -40,7 +43,7 @@ export class ElementsListBootstrapComponent implements OnInit {
 	}
 
 	myCloneImplementation = (item:ViewElement) => {
-		return item.clone(); // this is what happens if sortablejsCloneFunction is not provided. Add your stuff here
+		return item.clone();
 	};
 
 	getElementDescription(element: ViewElement): string {

@@ -1,7 +1,7 @@
 import {ConfigurationEvent} from './configurationEvent';
 import {ViewElement} from '../../model/viewElement';
 
-export class ConfigurationElementAddedEvent implements ConfigurationEvent{
+export class ConfigurationElementChangedEvent implements ConfigurationEvent{
 	private readonly _elements:ViewElement[];
 
 

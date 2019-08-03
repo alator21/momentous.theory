@@ -2,9 +2,10 @@ import {Subject} from 'rxjs';
 import {ConfigurationState} from './configurationState';
 import {ConfigurationEvent} from './configurationEvent';
 import {ConfigurationInitViewEvent} from './configurationInitViewEvent';
-import {ConfigurationElementAddedEvent} from './configurationElementAddedEvent';
+import {ConfigurationElementChangedEvent} from './configurationElementChangedEvent';
 import {ViewElement} from '../../model/viewElement';
 import {GeneralService} from '../../application/services/general.service';
+import {ConfigurationRemoveAllEvent} from './configurationRemoveAllEvent';
 
 export class ConfigurationPresenter {
 	private readonly _state: Subject<ConfigurationState>;
@@ -33,11 +34,17 @@ export class ConfigurationPresenter {
 			rainbowConfig.push(ViewElement.createText(']', null, GeneralService.COLORS().RED));
 			rainbowConfig.push(ViewElement.createText('$', null, null));
 			rainbowConfig.push(ViewElement.createText(' ', null, null));
+			setTimeout(()=>{
+				nextState = new ConfigurationState(rainbowConfig);
+				this._state.next(nextState);
+			},100);
 
-			nextState = new ConfigurationState(rainbowConfig);
-			this._state.next(nextState);
-		} else if (event instanceof ConfigurationElementAddedEvent) {
+		} else if (event instanceof ConfigurationElementChangedEvent) {
 			nextState = new ConfigurationState(event.elements);
+			this._state.next(nextState);
+		}
+		else if (event instanceof ConfigurationRemoveAllEvent) {
+			nextState = new ConfigurationState([]);
 			this._state.next(nextState);
 		}
 	}

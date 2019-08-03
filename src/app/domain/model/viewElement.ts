@@ -18,6 +18,8 @@ export class ViewElement {
 		this._elementShowText = value;
 	}
 
+
+
 	static createDefault(elementName: string): ViewElement {
 		return new ViewElement(elementName, null, null, elementName);
 	}
@@ -86,14 +88,7 @@ export class ViewElement {
 	}
 
 	clone(): ViewElement {
-		if (this.backgroundColorDefault) {
-			if (this.foregroundColorDefault) {
-				return ViewElement.createDefault(this.elementName);
-			} else {
-				return ViewElement.createBgDefault(this.elementName, this.foregroundColorName);
-			}
-		}
-		return ViewElement.create(this.elementName, this.backgroundColorName, this.foregroundColorName);
+		return new ViewElement(this.elementName,this.backgroundColorName,this.foregroundColorName,this.elementShowText);
 	}
 }
 

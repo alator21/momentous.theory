@@ -4,6 +4,7 @@ import {PreviewEvent} from './previewEvent';
 import {PreviewInitViewEvent} from './previewInitViewEvent';
 import {PreviewToggleEvent} from './previewToggleEvent';
 import {GeneralService} from '../../application/services/general.service';
+import {PreviewElementChangedEvent} from './previewElementChangedEvent';
 
 export class PreviewPresenter {
 	private readonly _state: Subject<PreviewState>;
@@ -27,6 +28,10 @@ export class PreviewPresenter {
 		else if (event instanceof PreviewToggleEvent){
 			this.service.toggle();
 			nextState = new PreviewState(null, this.service.defaultBgColor,this.service.defaultFgColor);
+			this._state.next(nextState);
+		}
+		else if (event instanceof PreviewElementChangedEvent){
+			nextState = new PreviewState(event.elements, this.service.defaultBgColor,this.service.defaultFgColor);
 			this._state.next(nextState);
 		}
 	}
