@@ -1,21 +1,21 @@
 #ElementsList {
-  height: 350px;
-  /*width: 350px;*/
-  border: 3px dashed black;
-  border-radius: 25px;
-  padding: 20px;
-  background-color: #FFB371;
+	height: 180px;
+	border: 3px dashed black;
+	border-radius: 25px;
+	padding: 20px;
+	background-color: #FFB371;
 }
+
 #ElementsList span {
-	width: 160px;
-	height:35px;
+	min-width: 80px;
+	font-size: 16px;
 	background-color: black;
 	color: white;
 	border: 1px solid black;
 	display: inline-block;
 	border-radius: 25px;
 	padding: 2px;
-	margin: 2px;
+	margin: 5px;
 	text-align: center;
 	align-content: center;
 	user-select: none;

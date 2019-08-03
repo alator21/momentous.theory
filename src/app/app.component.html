@@ -1,23 +1,63 @@
-<div class="container-fluid">
-	<app-preview-bootstrap
-		class="row"
-		[listener]="appElementsEmmiter"
-	>
-	</app-preview-bootstrap>
-	<hr>
-	<app-configuration-bootstrap
-		class="row"
-		(configurationElementsEmitter)="listener($event)"
-	>
-	</app-configuration-bootstrap>
-	<hr>
-	<div class="row">
-		<app-elements-list-bootstrap class="col-md-7">
-		</app-elements-list-bootstrap>
-		<app-output-bootstrap
-			class="col-md-5"
-			[listener]="appElementsEmmiter"
-		>
-		</app-output-bootstrap>
+<section id="intro" class="clearfix">
+	<div class="container">
+		<div class="row">
+			<div class="container-fluid">
+				<app-preview-bootstrap
+					class="row"
+					[listener]="appElementsEmmiter"
+				>
+				</app-preview-bootstrap>
+			</div>
+		</div>
+		<div class="row">
+			<div class="container-fluid">
+				<app-elements-list-bootstrap>
+				</app-elements-list-bootstrap>
+			</div>
+		</div>
+		<div class="row">
+			<div class='col-md-12'>
+				<div class="container-fluid">
+					<app-configuration-bootstrap
+						class="row"
+						(configurationElementsEmitter)="listener($event)"
+					>
+					</app-configuration-bootstrap>
+				</div>
+
+			</div>
+		</div>
 	</div>
-</div>
+</section>
+
+<main id="main">
+	<section id="about">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<app-output-bootstrap
+						class="col-md-5"
+						[listener]="appElementsEmmiter"
+					>
+					</app-output-bootstrap>
+				</div>
+
+
+
+			</div>
+
+		</div>
+	</section>
+</main>
+<footer id="footer">
+	<div class="container">
+		<div class="credits">
+			<h4>Momentous Theory</h4>
+			by <a href="https://github.com/alator21">Alator</a>
+			<br>
+			Source code of this app can be found at <a href="https://github.com/alator21/momentous.theory">Github</a>
+			<br>
+			This application was heavily inspired by the awesome <a href="http://xta.github.io/HalloweenBash/">Halloween Bash</a>
+		</div>
+	</div>
+</footer><!-- #footer -->

@@ -1,6 +1,6 @@
 #Configuration {
 	background-color: #FFB371;
-	height: 100px;
+	height: 150px;
 	min-height: 30px;
 	width: 100%;
 	border: 3px dashed black;
@@ -8,19 +8,19 @@
 }
 
 #Configuration span {
-	width: 170px;
-	height:35px;
+	min-width: 80px;
 	background-color: black;
 	color: white;
 	border: 1px solid black;
 	display: inline-block;
 	border-radius: 25px;
-	padding: 2px;
-	margin: 2px;
+	padding: 5px;
+	margin: 5px;
 	text-align: center;
 	align-content: center;
 	user-select: none;
 }
+
 #Configuration span:before {
 	content: "\200b";
 }
@@ -29,15 +29,3 @@
 .faGlyphicons {
 	font-size: 40px;
 }
-
-#TrashBin {
-	background: blue;
-	width: 50px;
-	height: 50px;
-	display: inline-block;
-}
-.invisible{
-	opacity: 0.1;
-	/*display: none;*/
-}
-
