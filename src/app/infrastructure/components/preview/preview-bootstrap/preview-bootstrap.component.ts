@@ -77,7 +77,7 @@ export class PreviewBootstrapComponent implements OnInit {
 		return DEFAULT_FG_BLACK_BG_WHITE_PREVIEW_CLASS;
 	}
 
-	temp(viewElement: ViewElement): string | null {
+	getElementExample(viewElement: ViewElement): string | null {
 		let example = GeneralService.getElementExampleByViewElement(viewElement);
 		return example || null;
 	}

@@ -110,10 +110,4 @@ export class ConfigurationBootstrapComponent implements OnInit {
 			this.presenter.publishEvent(event);
 		}
 	}
-	// getPreviewClass(): string {
-	// 	if (this.isBgBlackFgWhite()) {
-	// 		return DEFAULT_BG_BLACK_FG_WHITE_PREVIEW_CLASS;
-	// 	}
-	// 	return DEFAULT_FG_BLACK_BG_WHITE_PREVIEW_CLASS;
-	// }
 }

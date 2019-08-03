@@ -13,8 +13,7 @@
 				[ngClass]="getPreviewClass()"
 				id='Preview'
 			>
-		<span *ngFor="let element of elements" [style.color]="element.foregroundColorName"
-			  [style.backgroundColor]="element.backgroundColorName">{{temp(element)}}</span>
+		<span *ngFor="let element of elements" [style.color]="element.foregroundColorName" [style.backgroundColor]="element.backgroundColorName">{{getElementExample(element)}}</span>
 			</div>
 		</div>
 		<div class="col-md-2">

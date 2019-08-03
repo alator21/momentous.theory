@@ -98,7 +98,6 @@ export class OutputPresenter {
 			output += END_OUTPUT_COLOR;
 
 		}
-
 		return output;
 	}
 }

@@ -6,11 +6,15 @@
 }
 
 #Preview span{
+	white-space: pre-wrap;
 	font-size: 20px;
 	display: inline-block;
 	padding: 0;
 	margin: 0;
 	user-select: none;
+}
+#Preview span:before {
+	content: "\200b";
 }
 
 .background-black {
